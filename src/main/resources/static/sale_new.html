@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Venda</title>
+    <script>
+        async function createSale(event) {
+            event.preventDefault();
+
+            const clientId = document.getElementById('clientId').value;
+            const bookId = document.getElementById('bookId').value;
+            const quantity = document.getElementById('quantity').value;
+
+            if (!clientId || !bookId || !quantity) {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            const saleRequest = {
+                clientId: parseInt(clientId),
+                bookId: parseInt(bookId),
+                quantity: parseInt(quantity),
+                saleDate: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch("http://localhost:8082/sales", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(saleRequest)
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+
+                const data = await response.json();
+
+                // Mostra ID da venda
+                document.getElementById('saleId').innerText = data.id;
+
+                // Monta o resumo da venda
+                let summaryHtml = `<h2>Resumo da Venda</h2>`;
+                summaryHtml += `<p><strong>Cliente:</strong> ${data.clientName || 'Não disponível'}</p>`;
+                summaryHtml += `<p><strong>Total:</strong> R$ ${data.totalAmount}</p>`;
+                summaryHtml += `<table border="1" cellpadding="5">
+                                    <tr>
+                                        <th>Livro</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço Unitário</th>
+                                    </tr>
+                                    <tr>
+                                        <td>${data.bookName}</td>
+                                        <td>${data.quantity}</td>
+                                        <td>R$ ${data.price}</td>
+                                    </tr>
+                                </table>`;
+
+                document.getElementById('saleSummary').innerHTML = summaryHtml;
+
+                console.log("Venda criada:", data);
+            } catch (error) {
+                alert("Erro ao criar venda: " + error.message);
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Criar Venda</h1>
+<form onsubmit="createSale(event)">
+    <label for="clientId">ID do Cliente:</label>
+    <input type="text" id="clientId" required><br><br>
+
+    <label for="bookId">ID do Livro:</label>
+    <input type="text" id="bookId" required><br><br>
+
+    <label for="quantity">Quantidade:</label>
+    <input type="number" id="quantity" required min="1"><br><br>
+
+    <button id="saveButton" type="submit">Salvar Venda</button>
+</form>
+
+<p>ID da venda criada: <span id="saleId"></span></p>
+<div id="saleSummary"></div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Autor</title>
+</head>
+<body>
+<h1>Criar Novo Autor</h1>
+
+<form id="authorForm">
+    <label for="name">Nome do Autor:</label>
+    <input type="text" id="name" name="name" required>
+    <br><br>
+
+    <button type="submit" id="saveButton">Salvar</button>
+</form>
+
+<div id="result" style="margin-top:20px;">
+    <strong>ID do Autor Criado:</strong> <span id="authorId"></span>
+</div>
+
+<script>
+    const form = document.getElementById('authorForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value;
+
+        try {
+            const response = await fetch('http://localhost:8082/authors', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+
+            if (!response.ok) throw new Error('Erro ao criar autor');
+
+            const data = await response.json();
+            document.getElementById('authorId').textContent = data.id;
+
+            form.reset();
+        } catch (error) {
+            alert(error);
+        }
+    });
+</script>
+</body>
+</html>

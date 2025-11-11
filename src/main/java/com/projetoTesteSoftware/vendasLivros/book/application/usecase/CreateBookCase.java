@@ -50,9 +50,6 @@ public class CreateBookCase {
         responseDTO.setQuantityInStock(savedBook.getQuantityInStock());
         responseDTO.setAuthorId(savedBook.getAuthor().getId());
         responseDTO.setStockId(savedBook.getStock().getId());
-        responseDTO.setSaleItemIds(savedBook.getSaleItems().stream()
-                .map(item -> item.getId())
-                .toList());
 
         return responseDTO;
     }

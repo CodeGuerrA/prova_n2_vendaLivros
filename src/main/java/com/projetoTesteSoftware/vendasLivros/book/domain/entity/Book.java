@@ -2,8 +2,6 @@ package com.projetoTesteSoftware.vendasLivros.book.domain.entity;
 
 
 import com.projetoTesteSoftware.vendasLivros.author.domain.entity.Author;
-import com.projetoTesteSoftware.vendasLivros.sale.domain.entity.Sale;
-import com.projetoTesteSoftware.vendasLivros.saleitem.domain.entity.SaleItem;
 import com.projetoTesteSoftware.vendasLivros.stock.domain.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -49,7 +47,4 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
-
-    @OneToMany(mappedBy = "book")
-    private List<SaleItem> saleItems = new ArrayList<>();
 }

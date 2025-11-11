@@ -6,8 +6,8 @@ import com.projetoTesteSoftware.vendasLivros.book.domain.port.BookRepositoryPort
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +17,9 @@ public class FinderBookCase {
 
     public List<BookResponseDTO> findAll() {
         List<Book> books = bookRepositoryPort.findByAll();
+        List<BookResponseDTO> dtos = new ArrayList<>();
 
-        // Converte cada Book para BookResponseDTO
-        return books.stream().map(book -> {
+        for (Book book : books) {
             BookResponseDTO dto = new BookResponseDTO();
             dto.setId(book.getId());
             dto.setTitle(book.getTitle());
@@ -28,10 +28,10 @@ public class FinderBookCase {
             dto.setQuantityInStock(book.getQuantityInStock());
             dto.setAuthorId(book.getAuthor() != null ? book.getAuthor().getId() : null);
             dto.setStockId(book.getStock() != null ? book.getStock().getId() : null);
-            dto.setSaleItemIds(book.getSaleItems().stream()
-                    .map(item -> item.getId())
-                    .toList());
-            return dto;
-        }).collect(Collectors.toList());
+
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 }

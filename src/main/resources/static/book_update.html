@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Atualizar Livro</title>
+    <script>
+        async function updateBook(event) {
+            event.preventDefault();
+
+            const bookId = document.getElementById('bookId').value;
+            const authorId = document.getElementById('authorId').value;
+            const stockId = document.getElementById('stockId').value;
+            const title = document.getElementById('title').value;
+            const isbn = document.getElementById('isbn').value;
+            const price = document.getElementById('price').value;
+            const quantity = document.getElementById('quantity').value;
+
+            if (!bookId || !authorId || !stockId || !title || !isbn || !price || !quantity) {
+                alert("Preencha todos os campos!");
+                return;
+            }
+
+            const bookRequest = {
+                title: title,
+                isbn: isbn,
+                price: parseFloat(price),
+                quantityInStock: parseInt(quantity)
+            };
+
+            try {
+                const response = await fetch(`http://localhost:8082/books/${bookId}?authorId=${authorId}&stockId=${stockId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(bookRequest)
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
+
+                const data = await response.json();
+                document.getElementById('updateResult').innerHTML = `
+                    <h2>Livro Atualizado</h2>
+                    <p>ID: ${data.id}</p>
+                    <p>Título: ${data.title}</p>
+                    <p>ISBN: ${data.isbn}</p>
+                    <p>Preço: R$ ${data.price}</p>
+                    <p>Quantidade em estoque: ${data.quantityInStock}</p>
+                `;
+            } catch (error) {
+                alert("Erro ao atualizar livro: " + error.message);
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Atualizar Livro</h1>
+<form onsubmit="updateBook(event)">
+    <label for="bookId">ID do Livro:</label>
+    <input type="text" id="bookId" required><br><br>
+
+    <label for="authorId">ID do Autor:</label>
+    <input type="text" id="authorId" required><br><br>
+
+    <label for="stockId">ID do Estoque:</label>
+    <input type="text" id="stockId" required><br><br>
+
+    <label for="title">Título:</label>
+    <input type="text" id="title" required><br><br>
+
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" required><br><br>
+
+    <label for="price">Preço:</label>
+    <input type="number" id="price" required step="0.01" min="0"><br><br>
+
+    <label for="quantity">Quantidade em estoque:</label>
+    <input type="number" id="quantity" required min="0"><br><br>
+
+    <button type="submit">Atualizar Livro</button>
+</form>
+
+<div id="updateResult"></div>
+</body>
+</html>

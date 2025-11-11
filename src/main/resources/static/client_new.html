@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Cliente</title>
+</head>
+<body>
+<h1>Criar Novo Cliente</h1>
+
+<form id="clientForm">
+    <label for="name">Nome do Cliente:</label>
+    <input type="text" id="name" name="name" required>
+    <br><br>
+
+    <button type="submit" id="saveButton">Salvar</button>
+</form>
+
+<div id="result" style="margin-top:20px;">
+    <strong>ID do Cliente Criado:</strong> <span id="clientId"></span>
+</div>
+
+<script>
+    const form = document.getElementById('clientForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value;
+
+        try {
+            const response = await fetch('http://localhost:8082/clients', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+
+            if (!response.ok) throw new Error('Erro ao criar cliente');
+
+            const data = await response.json();
+            document.getElementById('clientId').textContent = data.id;
+
+            form.reset();
+        } catch (error) {
+            alert(error);
+        }
+    });
+</script>
+</body>
+</html>

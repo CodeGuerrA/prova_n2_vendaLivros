@@ -29,18 +29,15 @@ public class UpdateBookCase {
         bookSaved.setPrice(bookRequestDTO.getPrice());
         bookSaved.setQuantityInStock(bookRequestDTO.getQuantityInStock());
 
-        // Atualiza autor, se necessário
+        // Atualiza autor
+        var author = authorRepositoryPort.findbyID(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado!"));
+        bookSaved.setAuthor(author);
 
-            var author = authorRepositoryPort.findbyID(authorId)
-                    .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado!"));
-            bookSaved.setAuthor(author);
-
-
-        // Atualiza estoque, se necessário
-            var stock = stockRepositoryPort.findById(stockId)
-                    .orElseThrow(() -> new EntityNotFoundException("Stock não encontrado!"));
-            bookSaved.setStock(stock);
-
+        // Atualiza estoque
+        var stock = stockRepositoryPort.findById(stockId)
+                .orElseThrow(() -> new EntityNotFoundException("Stock não encontrado!"));
+        bookSaved.setStock(stock);
 
         // Salva alterações
         Book updatedBook = bookRepositoryPort.save(bookSaved);
@@ -54,9 +51,6 @@ public class UpdateBookCase {
         responseDTO.setQuantityInStock(updatedBook.getQuantityInStock());
         responseDTO.setAuthorId(updatedBook.getAuthor() != null ? updatedBook.getAuthor().getId() : null);
         responseDTO.setStockId(updatedBook.getStock() != null ? updatedBook.getStock().getId() : null);
-        responseDTO.setSaleItemIds(updatedBook.getSaleItems().stream()
-                .map(item -> item.getId())
-                .toList());
 
         return responseDTO;
     }

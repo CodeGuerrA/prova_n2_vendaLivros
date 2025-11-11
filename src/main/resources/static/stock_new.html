@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Estoque</title>
+</head>
+<body>
+<h1>Criar Novo Estoque</h1>
+
+<form id="stockForm">
+    <label for="location">Localização:</label>
+    <input type="text" id="location" name="location" required>
+    <br><br>
+
+    <label for="capacity">Capacidade:</label>
+    <input type="number" id="capacity" name="capacity" required>
+    <br><br>
+
+    <button type="submit" id="saveButton">Salvar</button>
+</form>
+
+<div id="result" style="margin-top:20px;">
+    <strong>ID do Estoque Criado:</strong> <span id="stockId"></span>
+</div>
+
+<script>
+    const form = document.getElementById('stockForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const location = document.getElementById('location').value;
+        const capacity = document.getElementById('capacity').value;
+
+        try {
+            const response = await fetch('http://localhost:8082/stocks', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ location, capacity })
+            });
+
+            if (!response.ok) throw new Error('Erro ao criar estoque');
+
+            const data = await response.json();
+            document.getElementById('stockId').textContent = data.id;
+
+            form.reset();
+        } catch (error) {
+            alert(error);
+        }
+    });
+</script>
+</body>
+</html>
