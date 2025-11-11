@@ -18,7 +18,6 @@ public class FinderAuthorUseCase {
     public List<AuthorResponseDTO> findAll() {
         List<Author> authors = authorRepositoryPort.findByAll();
 
-        // Converte cada Author para AuthorResponseDTO
         return authors.stream().map(author -> {
             AuthorResponseDTO dto = new AuthorResponseDTO();
             dto.setId(author.getId());

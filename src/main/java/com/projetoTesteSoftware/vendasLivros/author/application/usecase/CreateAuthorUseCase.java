@@ -14,18 +14,14 @@ public class CreateAuthorUseCase {
     private final AuthorRepositoryPort authorRepositoryPort;
 
     public AuthorResponseDTO saveAuthor(AuthorRequestDTO authorRequestDTO) {
-        // Converte RequestDTO para entidade
         Author author = new Author();
         author.setName(authorRequestDTO.getName());
 
-        // Salva no repositório
         Author savedAuthor = authorRepositoryPort.save(author);
 
-        // Converte entidade para ResponseDTO
         AuthorResponseDTO responseDTO = new AuthorResponseDTO();
         responseDTO.setId(savedAuthor.getId());
         responseDTO.setName(savedAuthor.getName());
-        // Inicializa lista vazia de livros (pode ser preenchida depois)
         responseDTO.setBookNames(savedAuthor.getBooks().stream()
                 .map(book -> book.getTitle())
                 .toList());

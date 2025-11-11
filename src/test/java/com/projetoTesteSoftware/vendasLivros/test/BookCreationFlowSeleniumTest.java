@@ -1,4 +1,4 @@
-package com.projetoTesteSoftware.vendasLivros.selenium;
+package com.projetoTesteSoftware.vendasLivros.test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
