@@ -1,11 +1,12 @@
 package com.projetoTesteSoftware.vendasLivros.author.application.facade.impl;
 
+import com.projetoTesteSoftware.vendasLivros.author.api.dto.request.AuthorRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.author.api.dto.response.AuthorResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.author.application.facade.AuthorFacade;
 import com.projetoTesteSoftware.vendasLivros.author.application.usecase.CreateAuthorUseCase;
 import com.projetoTesteSoftware.vendasLivros.author.application.usecase.DeleteAuthorUseCase;
 import com.projetoTesteSoftware.vendasLivros.author.application.usecase.FinderAuthorUseCase;
 import com.projetoTesteSoftware.vendasLivros.author.application.usecase.UpdateAuthorUseCase;
-import com.projetoTesteSoftware.vendasLivros.author.domain.entity.Author;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,12 @@ public class AuthorFacadeImpl implements AuthorFacade {
     private final FinderAuthorUseCase finderAuthorUseCase;
 
     @Override
-    public Author createAuthor(Author author) {
-        return createAuthorUseCase.saveAuthor(author);
+    public AuthorResponseDTO createAuthor(AuthorRequestDTO authorRequestDTO) {
+        return createAuthorUseCase.saveAuthor(authorRequestDTO);
     }
 
     @Override
-    public List<Author> findAllAuthors() {
+    public List<AuthorResponseDTO> findAllAuthors() {
         return finderAuthorUseCase.findAll();
     }
 
@@ -36,7 +37,7 @@ public class AuthorFacadeImpl implements AuthorFacade {
     }
 
     @Override
-    public Author updateAuthor(Author author, Long id) {
-        return updateAuthorUseCase.updateAuthor(author, id);
+    public AuthorResponseDTO updateAuthor(Long id, AuthorRequestDTO authorRequestDTO) {
+        return updateAuthorUseCase.updateAuthor(id, authorRequestDTO);
     }
 }

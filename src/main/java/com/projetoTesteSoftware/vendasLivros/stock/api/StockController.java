@@ -1,11 +1,14 @@
 package com.projetoTesteSoftware.vendasLivros.stock.api;
 
+import com.projetoTesteSoftware.vendasLivros.stock.api.dto.request.StockRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.stock.api.dto.response.StockResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.stock.application.facade.StockFacade;
 import com.projetoTesteSoftware.vendasLivros.stock.domain.entity.Stock;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/stocks")
@@ -15,9 +18,10 @@ public class StockController {
     private final StockFacade stockFacade;
 
     @PostMapping
-    public ResponseEntity<Stock> create(@RequestBody Stock stock) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(stockFacade.create(stock));
+    public ResponseEntity<StockResponseDTO> create(@RequestBody StockRequestDTO stockRequestDTO) {
+        StockResponseDTO created = stockFacade.createStock(stockRequestDTO);
+        return ResponseEntity.created(URI.create("/stocks/" + created.getId()))
+                .body(created);
     }
 
     @DeleteMapping("/{id}")

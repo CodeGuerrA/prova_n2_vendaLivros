@@ -1,11 +1,12 @@
 package com.projetoTesteSoftware.vendasLivros.book.application.facade.impl;
 
+import com.projetoTesteSoftware.vendasLivros.book.api.dto.request.BookRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.book.api.dto.response.BookResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.book.application.facade.BookFacade;
 import com.projetoTesteSoftware.vendasLivros.book.application.usecase.CreateBookCase;
 import com.projetoTesteSoftware.vendasLivros.book.application.usecase.DeleteBookCase;
 import com.projetoTesteSoftware.vendasLivros.book.application.usecase.FinderBookCase;
 import com.projetoTesteSoftware.vendasLivros.book.application.usecase.UpdateBookCase;
-import com.projetoTesteSoftware.vendasLivros.book.domain.entity.Book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +15,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BookFacadeImpl implements BookFacade {
+
     private final CreateBookCase createBookCase;
     private final UpdateBookCase updateBookCase;
     private final FinderBookCase finderBookCase;
     private final DeleteBookCase deleteBookCase;
 
-
     @Override
-    public Book createBook(Book book, Long authorId, Long stockId) {
-        return createBookCase.create(book, authorId, stockId);
+    public BookResponseDTO createBook(BookRequestDTO bookRequestDTO, Long authorId, Long stockId) {
+        // Passa explicitamente os IDs do autor e do estoque
+        return createBookCase.create(bookRequestDTO, authorId, stockId);
     }
 
     @Override
-    public List<Book> findAllBooks() {
+    public List<BookResponseDTO> findAllBooks() {
         return finderBookCase.findAll();
     }
 
@@ -36,7 +38,8 @@ public class BookFacadeImpl implements BookFacade {
     }
 
     @Override
-    public Book updateBook(Long id, Book book) {
-        return updateBookCase.update(id, book);
+    public BookResponseDTO updateBook(Long id, BookRequestDTO bookRequestDTO, Long authorId, Long stockId) {
+        return updateBookCase.update(authorId, stockId, bookRequestDTO, id);
     }
+
 }

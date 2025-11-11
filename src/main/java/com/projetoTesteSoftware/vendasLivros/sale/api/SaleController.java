@@ -1,7 +1,8 @@
 package com.projetoTesteSoftware.vendasLivros.sale.api;
 
+import com.projetoTesteSoftware.vendasLivros.sale.api.dto.request.SaleRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.sale.api.dto.response.SaleResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.sale.application.facade.SaleFacade;
-import com.projetoTesteSoftware.vendasLivros.sale.domain.entity.Sale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +16,29 @@ public class SaleController {
 
     private final SaleFacade saleFacade;
 
+    // Cria uma nova venda
     @PostMapping
-    public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
-        return ResponseEntity.ok(saleFacade.createSale(sale));
+    public ResponseEntity<SaleResponseDTO> createSale(@RequestBody SaleRequestDTO saleRequestDTO) {
+        SaleResponseDTO createdSale = saleFacade.createSale(saleRequestDTO);
+        return ResponseEntity.status(201).body(createdSale);
     }
 
+    // Lista todas as vendas
     @GetMapping
-    public ResponseEntity<List<Sale>> findAllSales() {
-        return ResponseEntity.ok(saleFacade.findAllSales());
+    public ResponseEntity<List<SaleResponseDTO>> findAllSales() {
+        List<SaleResponseDTO> sales = saleFacade.findAllSales();
+        return ResponseEntity.ok(sales);
     }
 
+    // Atualiza uma venda existente
     @PutMapping("/{id}")
-    public ResponseEntity<Sale> updateSale(@PathVariable Long id, @RequestBody Sale sale) {
-        return ResponseEntity.ok(saleFacade.updateSale(id, sale));
+    public ResponseEntity<SaleResponseDTO> updateSale(@PathVariable Long id,
+                                                      @RequestBody SaleRequestDTO saleRequestDTO) {
+        SaleResponseDTO updatedSale = saleFacade.updateSale(id, saleRequestDTO);
+        return ResponseEntity.ok(updatedSale);
     }
 
+    // Deleta uma venda
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSale(@PathVariable Long id) {
         saleFacade.deleteSale(id);

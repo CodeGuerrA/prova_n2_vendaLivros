@@ -1,8 +1,8 @@
-package com.projetoTesteSoftware.vendasLivros.saleitem.repository.adapter;
+package com.projetoTesteSoftware.vendasLivros.saleitem.infrastructure.adapter;
 
 import com.projetoTesteSoftware.vendasLivros.saleitem.domain.entity.SaleItem;
 import com.projetoTesteSoftware.vendasLivros.saleitem.domain.port.SaleItemRepositoryPort;
-import com.projetoTesteSoftware.vendasLivros.saleitem.repository.SaleItemRepository;
+import com.projetoTesteSoftware.vendasLivros.saleitem.infrastructure.SaleItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

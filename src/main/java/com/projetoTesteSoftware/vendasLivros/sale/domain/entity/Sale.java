@@ -37,6 +37,6 @@ public class Sale {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "sale")
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleItem> items = new ArrayList<>();
 }

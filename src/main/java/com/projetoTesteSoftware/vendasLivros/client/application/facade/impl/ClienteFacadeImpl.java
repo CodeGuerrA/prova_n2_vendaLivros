@@ -1,5 +1,7 @@
 package com.projetoTesteSoftware.vendasLivros.client.application.facade.impl;
 
+import com.projetoTesteSoftware.vendasLivros.client.api.dto.request.ClientRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.client.api.dto.response.ClientResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.client.application.caseuse.CreateClientCase;
 import com.projetoTesteSoftware.vendasLivros.client.application.caseuse.DeleteClientCase;
 import com.projetoTesteSoftware.vendasLivros.client.application.caseuse.FindClientCase;
@@ -14,29 +16,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ClienteFacadeImpl implements ClientFacade {
+
     private final CreateClientCase createClientCase;
     private final FindClientCase findClientCase;
     private final UpdateClientCase updateClientCase;
     private final DeleteClientCase deleteClientCase;
 
-
     @Override
-    public Client createClient(Client client) {
-        return createClientCase.create(client);
+    public ClientResponseDTO createClient(ClientRequestDTO clientRequestDTO) {
+        return createClientCase.create(clientRequestDTO);
     }
 
     @Override
-    public List<Client> findALlClients() {
+    public List<ClientResponseDTO> findAllClients() {
         return findClientCase.findAll();
     }
 
     @Override
-    public Client updateClient(Long id, Client client) {
-        return updateClientCase.update(id, client);
+    public ClientResponseDTO updateClient(Long id, ClientRequestDTO clientRequestDTO) {
+        return updateClientCase.update(id, clientRequestDTO);
     }
 
     @Override
     public void deleteClient(Long id) {
-        deleteClientCase.delete(id);
+         deleteClientCase.delete(id);
     }
 }

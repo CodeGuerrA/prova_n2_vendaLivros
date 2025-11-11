@@ -1,5 +1,7 @@
 package com.projetoTesteSoftware.vendasLivros.author.application.usecase;
 
+import com.projetoTesteSoftware.vendasLivros.author.api.dto.request.AuthorRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.author.api.dto.response.AuthorResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.author.domain.entity.Author;
 import com.projetoTesteSoftware.vendasLivros.author.domain.port.AuthorRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +10,26 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CreateAuthorUseCase {
+
     private final AuthorRepositoryPort authorRepositoryPort;
 
-    public Author saveAuthor(Author author) {
-        return authorRepositoryPort.save(author);
+    public AuthorResponseDTO saveAuthor(AuthorRequestDTO authorRequestDTO) {
+        // Converte RequestDTO para entidade
+        Author author = new Author();
+        author.setName(authorRequestDTO.getName());
+
+        // Salva no repositório
+        Author savedAuthor = authorRepositoryPort.save(author);
+
+        // Converte entidade para ResponseDTO
+        AuthorResponseDTO responseDTO = new AuthorResponseDTO();
+        responseDTO.setId(savedAuthor.getId());
+        responseDTO.setName(savedAuthor.getName());
+        // Inicializa lista vazia de livros (pode ser preenchida depois)
+        responseDTO.setBookNames(savedAuthor.getBooks().stream()
+                .map(book -> book.getTitle())
+                .toList());
+
+        return responseDTO;
     }
 }

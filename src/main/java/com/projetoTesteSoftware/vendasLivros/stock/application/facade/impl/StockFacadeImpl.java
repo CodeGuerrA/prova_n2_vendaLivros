@@ -1,5 +1,7 @@
 package com.projetoTesteSoftware.vendasLivros.stock.application.facade.impl;
 
+import com.projetoTesteSoftware.vendasLivros.stock.api.dto.request.StockRequestDTO;
+import com.projetoTesteSoftware.vendasLivros.stock.api.dto.response.StockResponseDTO;
 import com.projetoTesteSoftware.vendasLivros.stock.application.facade.StockFacade;
 import com.projetoTesteSoftware.vendasLivros.stock.application.usecase.CreateStockCase;
 import com.projetoTesteSoftware.vendasLivros.stock.application.usecase.DeleteStockCase;
@@ -13,9 +15,11 @@ public class StockFacadeImpl implements StockFacade {
 
     private final CreateStockCase createStockCase;
     private final DeleteStockCase deleteStockCase;
+
     @Override
-    public Stock create(Stock stock) {
-        return createStockCase.create(stock);
+    public StockResponseDTO createStock(StockRequestDTO stockRequestDTO) {
+        // Já retorna StockResponseDTO direto do UseCase
+        return createStockCase.create(stockRequestDTO);
     }
 
     @Override
